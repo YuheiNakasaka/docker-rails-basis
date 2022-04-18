@@ -17,7 +17,7 @@ https://github.com/YuheiNakasaka/docker-rails-basis
 この環境では下記の構成がデフォルトで作成される。
 
 - PostgreSQL + Redis
-- Rails + Webpacker + sidekiq
+- Rails + sidekiq
 
 # 基本方針
 
@@ -25,11 +25,11 @@ https://github.com/YuheiNakasaka/docker-rails-basis
 
 # 開発環境の立ち上げ
 
-`docker-compose.yml`の Ruby のバージョンを変更しておく。[https://hub.docker.com/\_/ruby](https://hub.docker.com/_/ruby)にある`-slim-buster`の tag を参考に。
+`docker-compose.yml`の Ruby のバージョンを変更しておく。[https://hub.docker.com/\_/ruby](https://hub.docker.com/_/ruby)にある tag を参考に。
 
 ```yml:docker-compose.yml
 args:
-  RUBY_VERSION: '2.6.3'
+  RUBY_VERSION: '3.1'
 ```
 
 runner を立ち上げる。
@@ -46,16 +46,26 @@ version は適宜変更する。
 
 ```Gemfile:Gemfile
 source 'https://rubygems.org'
-gem 'rails', '~> 6.1.4'
+gem 'rails', '~> 7.1.0'
 ```
 
 ```sh:sh
 bundle install
-bundle exec rails new . --force --no-deps --database=postgresql --webpack=typescript
+bundle exec rails new . --force --no-deps --database=postgresql
 rails db:create
 ```
 
 # Rails アプリの起動
+
+Procfile.dev を修正する。
+
+```
+web: bundle exec rails server -b 0.0.0.0 -p 3000
+js: yarn build --watch
+css: yarn build:css --watch
+```
+
+起動
 
 ```sh:sh
 docker-compose up rails
@@ -71,54 +81,77 @@ gem や db の作成は cache されているので 2 回目以降はいきな�
 docker-compose down
 ```
 
-# 以下は任意の作業
+# その他
 
-# JS ファイルの置き場所
+## Rubocop の設定
 
-`app/javascript/packs`配下にファイルを置くと[コンパイルのオーバーヘッドが大きくなり時間がかかる](https://railsguides.jp/webpacker.html#javascript%E3%82%92webpacker%E7%B5%8C%E7%94%B1%E3%81%A7%E5%88%A9%E7%94%A8%E3%81%99%E3%82%8B)のでファイルは基本的に`app/javascript/src`に配置する。
+### 依存のインストール
 
-```sh:sh
-mkdir app/javascript/src
+ホスト側
+
+```bash
+gem install solargraph rubocop rubocop-rails
 ```
 
-# Slim 対応
+コンテナ側
 
-```Gemfile:Gemfile
-gem 'slim-rails' # 追加
+```bash
+...
+group :development, :test do
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem 'debug', platforms: %i[mri mingw x64_mingw]
+  gem 'rubocop' # 追加
+end
+...
 ```
 
-```sh:sh
+```
 bundle install
 ```
 
-`app/views/layouts`配下のファイルを slim に変更
+### Solargraph に色々任せちゃう設定
 
-```slim:application.html.slim
-doctype html
- html
-   head
-     title
-       | Myapp
-     meta[name="viewport" content="width=device-width,initial-scale=1"]
-     = csrf_meta_tags
-     = csp_meta_tag
-     = stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
-     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
-   body
-     = yield
+.vscode/settings.json
+
+```json
+{
+  "ruby.lint": {
+    "rubocop": false
+  },
+  "solargraph.diagnostics": true,
+
+  "ruby.format": false,
+  "solargraph.formatting": true,
+  "[ruby]": {
+    "editor.defaultFormatter": "castwide.solargraph",
+    "editor.formatOnSave": true
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false
+  }
+}
 ```
 
-```slim:mailer.html
-doctype html
- html
-   head
-     meta[http-equiv="Content-Type" content="text/html; charset=utf-8"]
-     style
-       |  /* Email styles need to be inline */
-   body
-     = yield
-```
+### rubocop ファイルの設定
 
-```text:mailer.text
-= yield
+- [.rubocop.yml](https://gist.github.com/YuheiNakasaka/4de74cb50659c0bc40b9b921b81130c1)
+- [.rubocop_todo.yml](https://gist.github.com/YuheiNakasaka/6d0f8dd9b96a584b0e909f47241f1e02)
+
+## ERB のフォーマット
+
+VSCode 拡張 で[Beautify](https://marketplace.visualstudio.com/items?itemName=HookyQR.beautify)を入れる。
+
+.vscode/settings.json
+
+```json
+...
+  "beautify.language": {
+    "js": {
+      "type": ["javascript", "json"],
+      "filename": [".jshintrc", ".jsbeautifyrc"]
+    },
+    "css": ["css", "scss"],
+    "html": ["htm", "html", "erb"]
+  }
+}
 ```
