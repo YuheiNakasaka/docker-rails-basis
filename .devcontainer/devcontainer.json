@@ -25,6 +25,15 @@
         },
         "[markdown]": {
           "editor.formatOnSave": false
+        },
+        "tailwindCSS.includeLanguages": {
+          "javascript": "javascript",
+          "html": "html",
+          "erb": "html"
+        },
+        "files.associations": {
+          "*.css": "tailwindcss",
+          "*.html.erb": "html"
         }
       },
       "extensions": [
@@ -33,7 +42,8 @@
         "esbenp.prettier-vscode",
         "GitHub.copilot",
         "kaiwood.endwise",
-        "VisualStudioExptTeam.vscodeintellicode"
+        "VisualStudioExptTeam.vscodeintellicode",
+        "bradlc.vscode-tailwindcss"
       ]
     }
   },
