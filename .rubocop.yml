@@ -10,6 +10,9 @@ AllCops:
   TargetRubyVersion: 3.1
   NewCops: enable
 
+Style/ClassAndModuleChildren:
+  Enabled: false
+
 require:
   - rubocop-ast
   - rubocop-rails
