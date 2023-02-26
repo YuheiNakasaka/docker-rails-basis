@@ -72,6 +72,7 @@ Gemfile に下記を追加して`bundle install`。
 group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'erb_lint'
+  gem 'overcommit'
   gem 'rubocop'
   gem 'rubocop-ast'
   gem 'rubocop-performance'
@@ -100,6 +101,16 @@ rubocop --server $@
 ```
 
 この設定は Rubocop を daemon で常駐させるようにする server モードを使うためのもの。Rubocop 実行時に毎回プロセスを立ち上げるコストが減るのでだいぶ高速化する。詳細は[Integrate rubocop-daemon #10706](https://github.com/rubocop/rubocop/pull/10706)。
+
+## pre-commit-hook の設定
+
+erb の formatter と linter と tailwind css の補完の設定が微妙に噛み合わないので、開発中は tailwind css の補完を有効にしておく。lint や formatter は pre-commit-hook で実行する。
+
+```sh:sh
+overcommit --install
+```
+
+commit する前にコケたら`rubocop -A`や`erblint --lint-all -a`を実行して修正する。
 
 ## lint/formatting
 

@@ -1,0 +1,11 @@
+PreCommit:
+  RuboCop:
+    enabled: true
+    on_warn: fail
+    problem_on_unmodified_line: ignore
+    command: ["bundle", "exec", "rubocop"]
+  ErbLint:
+    enabled: true
+    on_warn: fail
+    problem_on_unmodified_line: ignore
+    command: ["bundle", "exec", "erblint", "--lint-all"]

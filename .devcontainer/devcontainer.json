@@ -26,6 +26,12 @@
         "[markdown]": {
           "editor.formatOnSave": false
         },
+        "[yml]": {
+          "editor.formatOnSave": false
+        },
+        "[html]": {
+          "editor.formatOnSave": false
+        },
         "tailwindCSS.includeLanguages": {
           "javascript": "javascript",
           "html": "html",
