@@ -6,6 +6,7 @@
   "customizations": {
     "vscode": {
       "settings": {
+        "ruby.rubocop.executePath": "./bin/",
         "[ruby]": {
           "editor.defaultFormatter": "misogi.ruby-rubocop",
           "editor.formatOnSave": true

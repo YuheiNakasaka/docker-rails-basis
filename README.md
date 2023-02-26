@@ -1,4 +1,3 @@
-
 [クジラに乗った Ruby: Evil Martians 流 Docker+Ruby/Rails 開発環境構築（翻訳）｜ TechRacho by BPS 株式会社](https://techracho.bpsinc.jp/hachi8833/2022_04_07/116843)
 
 この記事の開発環境が良かったので自分用にまとめる。Rails で開発する時はこれをベースに必要なもの/不要なものを Dockerfile や docker-compose から足し引きする。
@@ -22,12 +21,12 @@ https://github.com/YuheiNakasaka/docker-rails-basis
 - rubocop(formatter + linter)
 - erblint
 - PostgreSQL(13.0)
-- Redis(3.0。セッション管理やsidekiqのキュー管理に使う)
+- Redis(3.0。セッション管理や sidekiq のキュー管理に使う)
 - Hotwire
 
 # 基本方針
 
-VSCode + Dev Containersで開発することを想定。VSCodeで`runner`というコンテナを立ち上げ、そこでgemをインストールしたり`rails`コマンドを叩いたりする。
+VSCode + Dev Containers で開発することを想定。VSCode で`runner`というコンテナを立ち上げ、そこで gem をインストールしたり`rails`コマンドを叩いたりする。
 
 # 開発環境の立ち上げ
 
@@ -40,11 +39,11 @@ args:
 
 `image: example-dev:1.1.3`を好きな名前に変更しておく。
 
-VSCodeでDev Containersを開く。
+VSCode で Dev Containers を開く。
 
 # Rails アプリの作成(初回のみ)
 
-Railsのversion は適宜変更する。
+Rails の version は適宜変更する。
 
 ```Gemfile:Gemfile
 source 'https://rubygems.org'
@@ -57,7 +56,7 @@ gem 'rails', '~> 7.1.0'
 bundle install
 ```
 
-アプリの作成。Hotwireを使う場合は下記で。
+アプリの作成。Hotwire を使う場合は下記で。
 
 ```sh:sh
 bundle exec rails new . --force --database=postgresql --css=tailwind --javascript=importmap --skip-jbuilder -T -M
@@ -65,8 +64,9 @@ bundle exec rails new . --force --database=postgresql --css=tailwind --javascrip
 # bundle exec rails new . --force --database=postgresql --skip-action-mailer --skip-action-mailbox --skip-action-text --skip-active-job --skip-active-storage --skip-action-cable --skip-javascript --skip-hotwire --skip-jbuilder --skip-test --skip-system-test --skip-bootsnap --minimal
 ```
 
-# Rspec/Rubocop/Erblintの設定
-Gemfileに下記を追加して`bundle install`。
+# Rspec/Rubocop/Erblint の設定
+
+Gemfile に下記を追加して`bundle install`。
 
 ```
 group :development, :test do
@@ -83,22 +83,34 @@ group :development, :test do
 end
 ```
 
-rspecの初期化
+## rspec の初期化
 
 ```sh:sh
 bin/rails generate rspec:install
 ```
 
-lint/formatting
+## Rubocop を SeverMode で動かす
+
+`bin/rubocop`を作成し下記を記述。`chmod a+x bin/rubocop`で実行権限を付与。
+
+```sh:sh
+#!/bin/bash
+cd $(dirname $0)/..
+rubocop --server $@
+```
+
+この設定は Rubocop を daemon で常駐させるようにする server モードを使うためのもの。Rubocop 実行時に毎回プロセスを立ち上げるコストが減るのでだいぶ高速化する。詳細は[Integrate rubocop-daemon #10706](https://github.com/rubocop/rubocop/pull/10706)。
+
+## lint/formatting
 
 ```sh:sh
 rubocop -A
 erblint --lint-all -a
 ```
 
-# DBの設定
+# DB の設定
 
-DBの作成。
+DB の作成。
 
 ```sh:sh
 bin/rails db:create
@@ -112,21 +124,21 @@ bin/rails db:create
 bin/dev
 ```
 
-下記にアクセスするとwelcomeページが表示される。
+下記にアクセスすると welcome ページが表示される。
 
 [http://0.0.0.0:3000/](http://0.0.0.0:3000/)
 
 # その他
 
-## Railsアプリの作成
+## Rails アプリの作成
 
-Scaffoldなどを使って具体的なコードを書いていく。
+Scaffold などを使って具体的なコードを書いていく。
 
-## sidekiqの設定
+## sidekiq の設定
 
-[sidekiq/wiki](https://github.com/sidekiq/sidekiq/wiki)を見てActiveJobなどと連携しながら設定する。
+[sidekiq/wiki](https://github.com/sidekiq/sidekiq/wiki)を見て ActiveJob などと連携しながら設定する。
 
-## Dev Containersの再起動
+## Dev Containers の再起動
 
 fn > F1 > Dev Containers: Rebuild Containers
 
