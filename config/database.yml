@@ -79,6 +79,7 @@ test:
 #
 production:
   <<: *default
-  database: app_production
-  username: app
+  database: koyebdb
+  url: <%= ENV['DATABASE_URL'] %>
+  username: koyeb-adm
   password: <%= ENV["APP_DATABASE_PASSWORD"] %>
