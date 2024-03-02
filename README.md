@@ -16,12 +16,12 @@ https://github.com/YuheiNakasaka/docker-rails-basis
 
 この環境では下記の構成を作るのに必要そうなコンテナがデフォルトで作成される。
 
-- Ruby(3.1)
-- Rails(7.0)
+- Ruby(3.3)
+- Rails(7.1)
 - rubocop(formatter + linter)
 - erblint
-- PostgreSQL(13.0)
-- Redis(3.0。セッション管理や sidekiq のキュー管理に使う)
+- PostgreSQL(14.0)
+- Redis(7.0。セッション管理や sidekiq のキュー管理に使う)
 - Hotwire
 
 # 基本方針

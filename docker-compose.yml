@@ -5,16 +5,16 @@ x-app: &app
     context: .dockerdev
     dockerfile: Dockerfile
     args:
-      RUBY_VERSION: "3.1"
-      PG_MAJOR: "13"
-      NODE_MAJOR: "16"
-      BUNDLER_VERSION: "2.4.7"
-      YARN_VERSION: "1.22.17"
+      RUBY_VERSION: "3.3"
+      PG_MAJOR: "14"
+      NODE_MAJOR: "20"
+      BUNDLER_VERSION: "2.5.6"
+      YARN_VERSION: "1.22.19"
   environment: &env
     NODE_ENV: ${NODE_ENV:-development}
     RAILS_ENV: ${RAILS_ENV:-development}
     YARN_CACHE_FOLDER: /app/node_modules/.yarn-cache
-  image: example-dev:1.1.3
+  image: example-dev:1.0.0
   tmpfs:
     - /tmp
     - /app/tmp/pids
@@ -54,10 +54,10 @@ services:
 
   sidekiq:
     <<: *backend
-    command: bundle exec sidekiq -C config/sidekiq.yml
+    command: which sidekiq >/dev/null 2>&1 && bundle exec sidekiq -C config/sidekiq.yml
 
   postgres:
-    image: postgres:13.0
+    image: postgres:14.0
     volumes:
       - .dockerdev/.psqlrc:/root/.psqlrc:ro
       - postgres:/var/lib/postgresql/data
@@ -72,7 +72,7 @@ services:
       interval: 5s
 
   redis:
-    image: redis:3.2-alpine
+    image: redis:7.0-alpine
     volumes:
       - redis:/data
     ports:
