@@ -90,18 +90,6 @@ end
 bin/rails generate rspec:install
 ```
 
-## Rubocop を SeverMode で動かす
-
-`bin/rubocop`を作成し下記を記述。`chmod a+x bin/rubocop`で実行権限を付与。
-
-```sh:sh
-#!/bin/bash
-cd $(dirname $0)/..
-rubocop --server $@
-```
-
-この設定は Rubocop を daemon で常駐させるようにする server モードを使うためのもの。Rubocop 実行時に毎回プロセスを立ち上げるコストが減るのでだいぶ高速化する。詳細は[Integrate rubocop-daemon #10706](https://github.com/rubocop/rubocop/pull/10706)。
-
 ## pre-commit-hook の設定
 
 erb の formatter と linter と tailwind css の補完の設定が微妙に噛み合わないので、開発中は tailwind css の補完を有効にしておく。lint や formatter は pre-commit-hook で実行する。

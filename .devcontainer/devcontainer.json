@@ -6,9 +6,8 @@
   "customizations": {
     "vscode": {
       "settings": {
-        "ruby.rubocop.executePath": "./bin/",
         "[ruby]": {
-          "editor.defaultFormatter": "misogi.ruby-rubocop",
+          "editor.defaultFormatter": "rubocop.vscode-rubocop",
           "editor.formatOnSave": true
         },
         "[javascript]": {
@@ -44,7 +43,7 @@
       },
       "extensions": [
         "rebornix.Ruby",
-        "misogi.ruby-rubocop",
+        "rubocop.vscode-rubocop",
         "esbenp.prettier-vscode",
         "GitHub.copilot",
         "kaiwood.endwise",
