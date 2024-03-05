@@ -10,6 +10,7 @@ ARG BUNDLER_VERSION
 ARG YARN_VERSION
 
 # Common dependencies
+RUN apt-get install --only-upgrade bash -y
 RUN apt-get update -qq \
   && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
   build-essential \

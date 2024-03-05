@@ -72,7 +72,6 @@ Gemfile に下記を追加して`bundle install`。
 group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'erb_lint'
-  gem 'overcommit'
   gem 'rubocop'
   gem 'rubocop-ast'
   gem 'rubocop-performance'
@@ -82,29 +81,16 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rspec-rails'
 end
+
+group :development do
+  gem 'ruby-lsp'
+end
 ```
 
 ## rspec の初期化
 
 ```sh:sh
 bin/rails generate rspec:install
-```
-
-## pre-commit-hook の設定
-
-erb の formatter と linter と tailwind css の補完の設定が微妙に噛み合わないので、開発中は tailwind css の補完を有効にしておく。lint や formatter は pre-commit-hook で実行する。
-
-```sh:sh
-overcommit --install
-```
-
-commit する前にコケたら`rubocop -A`や`erblint --lint-all -a`を実行して修正する。
-
-## lint/formatting
-
-```sh:sh
-rubocop -A
-erblint --lint-all -a
 ```
 
 # DB の設定
