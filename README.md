@@ -59,7 +59,7 @@ bundle install
 アプリの作成。Hotwire を使う場合は下記で。
 
 ```sh:sh
-bundle exec rails new . --force --database=postgresql --css=tailwind --javascript=importmap --skip-jbuilder -T -M
+bundle exec rails new . -s --database=postgresql --css=tailwind --javascript=importmap --skip-jbuilder -T
 # skipオプションは下記を参考に
 # bundle exec rails new . --force --database=postgresql --skip-action-mailer --skip-action-mailbox --skip-action-text --skip-active-job --skip-active-storage --skip-action-cable --skip-javascript --skip-hotwire --skip-jbuilder --skip-test --skip-system-test --skip-bootsnap --minimal
 ```
@@ -70,8 +70,9 @@ Gemfile に下記を追加して`bundle install`。
 
 ```
 group :development, :test do
-  gem 'debug', platforms: %i[mri mingw x64_mingw]
+  gem 'debug', platforms: %i[ mri windows ]
   gem 'erb_lint'
+  gem 'pry-rails'
   gem 'rubocop'
   gem 'rubocop-ast'
   gem 'rubocop-performance'

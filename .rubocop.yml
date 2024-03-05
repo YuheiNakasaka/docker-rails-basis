@@ -13,6 +13,9 @@ AllCops:
 Style/ClassAndModuleChildren:
   Enabled: false
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 require:
   - rubocop-ast
   - rubocop-rails
