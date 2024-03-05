@@ -1,12 +1,18 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  devise_for :user, skip: :all
+  devise_for :database_authentications, class_name: 'User::DatabaseAuthentication', controllers: {
+    sessions: 'user/database_authentication/sessions'
+  }
+  devise_for :registrations, class_name: 'User::Registration', controllers: { confirmations: 'user/registrations' }
+  devise_scope :registration do
+    post '/registration/finish', to: 'user/registrations#finish', as: 'finish_user_registration'
+  end
+  devise_for :users
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
   get 'up' => 'rails/health#show', as: :rails_health_check
-
-  # Defines the root path route ("/")
   root 'welcome#index'
+
+  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end

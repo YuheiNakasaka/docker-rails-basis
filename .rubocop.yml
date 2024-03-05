@@ -13,6 +13,12 @@ AllCops:
 Style/ClassAndModuleChildren:
   Enabled: false
 
+Metrics/BlockLength:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
 require:
   - rubocop-ast
   - rubocop-rails

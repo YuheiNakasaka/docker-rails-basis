@@ -13,6 +13,20 @@
 
   <body>
     <main class="container mx-auto mt-28 px-5 flex">
+      <header style="margin-top:30px;">
+        <nav>
+          <% if user_signed_in? %>
+            Logged in as <strong><%= current_user.nickname %>: <%= current_user.database_authentication.email %></strong>.
+            <%= link_to 'プロフィール変更', edit_database_authentication_registration_path %> |
+            <%= link_to 'ログアウト', destroy_database_authentication_session_path %>
+          <% else %>
+            <%= link_to 'サインアップ', new_registration_confirmation_path %> |
+            <%= link_to 'ログイン', new_database_authentication_session_path %>
+          <% end %>
+        </nav>
+      </header>
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
       <%= yield %>
     </main>
   </body>
