@@ -84,6 +84,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'web-console'
   gem 'ruby-lsp'
 end
 ```
@@ -127,6 +128,12 @@ Scaffold などを使って具体的なコードを書いていく。
 ## Dev Containers の再起動
 
 fn > F1 > Dev Containers: Rebuild Containers
+
+## Container の再ビルド
+
+```
+docker-compose build --no-cache
+```
 
 ## 削除
 
